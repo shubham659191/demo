@@ -1,0 +1,13 @@
+<%= form_with model: @job do |form| %>
+  <div>
+    <%= form.label :job_type %><br>
+    <%= form.text_field :job_type %>
+   
+  </div>
+
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

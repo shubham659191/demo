@@ -1,0 +1,120 @@
+<h1>Jobs#index</h1>
+<p>Find me in app/views/jobs/index.html.erb</p>
+<% if user_signed_in? %>
+  Logged in as <strong><%= current_user.email %></strong>.
+  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+<% else %>
+  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+  <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+<% end %>
+
+
+<h1>jobs.all</h1>
+
+<ul>
+  <% @jobs.each do |job| %>
+    <li>
+     <h4>job_id</h4><%= job.id %>
+     <h4>job_type</h4> <%= job.job_type %>
+      <%#= job.user_id%>
+     
+
+
+    </li>
+  <% end %>
+</ul>
+
+<% if (current_user.has_role? :employer) %>
+
+	
+
+			<h1>your_job</h1>
+
+			<ul>
+			  <% @jobs.each do |job| %>
+		<% if (job.user_id  == current_user.id) %>
+				<h4>job_id</h4><%= job.id %>
+				<h4>job_type</h4> <%= job.job_type %>  
+				<% if (job.job_stutes == "applying") %>
+					    <li>
+					     <h4>job_id</h4><%= job.id %>
+					     <h4>job_type</h4> <%= job.job_type %>
+					      <%#= job.user_id%>
+					     <h4>job_stutes</h4><%= job.job_stutes%>
+					     <td><%= button_to 'hire',  hire_job_path(job.id), method: :hire   %></td>
+					     <td><%= button_to 'fire',  fire_job_path(job.id), method: :fire   %></td>
+
+
+					    </li>
+					  	<% end %>
+						</ul>
+				<% end %>	
+		<%end%>		
+
+		<%= link_to "New job", new_job_path %>
+
+<%end%>
+
+<% if (current_user.has_role? :admin) %>
+	<h1>admin review </h1>
+<%#debugger%>
+	
+		<ul>
+	  <% @jobs.each do |job| %>
+	  <% if (job.job_stutes == "add") %>
+			    <li>
+			     <h4>job_id</h4><%= job.id %>
+			     <h4>job_type</h4> <%= job.job_type %>
+			      <%#= job.user_id%>
+			     <h4>job_stutes</h4><%= job.job_stutes%>
+
+			     <td><%= button_to 'accept',  accept_job_path(job.id), method: :accept   %></td>
+			     <td><%= button_to 'reject',  reject_job_path(job.id), method: :reject   %></td>
+
+
+			    </li>
+		<%end%>	    
+	  <% end %>
+	</ul>
+
+		
+
+<%end%>		
+<% if (current_user.has_role? :user) %>
+	<h1>current opning</h1>
+<%#debugger%>
+	
+		<ul>
+	  <% @jobs.each do |job| %>
+	  <% if (job.job_stutes == "accept") %>
+			    <li>
+			     <h4>job_id</h4><%= job.id %>
+			     <h4>job_type</h4> <%= job.job_type %>
+			      <%#= job.user_id%>
+			     <h4>job_stutes</h4><%= job.job_stutes%>
+
+			     <td><%= button_to 'apply_job',  apply_job_job_path(job.id), method: :apply_job   %></td>
+
+			        <%#= form_for @job , url: apply_job_job_path(job.id), method: :apply_job do |f| %>
+			         
+			           <%#= f.label :attachment %>
+			           <%#= f.file_field :attachment %>
+			           <%#= f.submit "apply_job" %>
+			        <% #end %>
+			     </div>
+			    
+
+
+			    </li>
+		<%end%>	    
+	  <% end %>
+	</ul>
+
+		
+
+<%end%>	
+
+
+
+
